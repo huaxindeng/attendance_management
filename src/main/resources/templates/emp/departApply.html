@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>企业考勤</title>
+		<!-- Bootstrap core CSS -->
+		<link href="/asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="/asserts/css/dashboard.css" th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
+		<style type="text/css">
+			/* Chart.js */
+			
+			@-webkit-keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			@keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			.chartjs-render-monitor {
+				-webkit-animation: chartjs-render-animation 0.001s;
+				animation: chartjs-render-animation 0.001s;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--引入抽取的topbar-->
+		<!--模板名：会使用thymeleaf的前后缀配置规则进行解析-->
+		<div th:replace="commons/bar::topbar"></div>
+
+		<div class="container-fluid">
+			<div class="row">
+				<!--引入侧边栏-->
+				<div th:replace="commons/bar::#sidebar(activeUri='emps')"></div>
+
+				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+					<h2>
+						<a class="btn btn-sm btn-success" th:href="@{/application/getDepartApply/0}">全部申请</a>
+						<a class="btn btn-sm btn-success" th:href="@{/application/getDepartApply/1}">未审核</a>
+						<a class="btn btn-sm btn-success" th:href="@{/application/getDepartApply/2}">已审核</a>
+						<a class="btn btn-sm btn-success" th:href="@{/application/getDepartApply/3}">已取消</a>
+						<a class="btn btn-sm btn-success" th:href="@{/application/getDepartApply/0}">返回</a>
+					</h2>
+
+					<div class="table-responsive">
+						<table class="table table-striped table-sm">
+							<thead>
+								<tr>
+									<th>编号</th>
+									<th>申请人</th>
+									<th>申请类型</th>
+									<th>申请状态</th>
+									<th>开始日期</th>
+									<th>结束日期</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="a:${session.applicationDepartList}">
+									<td th:text="${a.applyId}"></td>
+									<td th:text="${a.employee.username}"></td>
+									<td th:text="${a.applyType}"></td>
+									<td th:text="${a.applyState}"></td>
+									<td th:text="${#dates.format(a.startTime, 'yyyy-MM-dd')}"></td>
+									<td th:text="${#dates.format(a.endTime, 'yyyy-MM-dd')}"></td>
+<!--									<td th:text="${#dates.format(emp.birth, 'yyyy-MM-dd HH:mm')}"></td>-->
+									<td >
+										<a class="btn btn-sm btn-primary" th:href="@{/application/agree/}+${a.applyId}">同意</a>
+										<a class="btn btn-sm btn-primary" th:href="@{/application/deny/}+${a.applyId}">拒绝</a>
+
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</main>
+
+			</div>
+		</div>
+
+		<!-- Bootstrap core JavaScript
+    ================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" src="asserts/js/jquery-3.2.1.slim.min.js" th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
+		<script type="text/javascript" src="asserts/js/popper.min.js" th:src="@{/webjars/popper.js/1.11.1/dist/popper.js}"></script>
+		<script type="text/javascript" src="asserts/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.js}"></script>
+
+		<!-- Icons -->
+		<script type="text/javascript" src="asserts/js/feather.min.js" th:src="@{/asserts/js/feather.min.js}"></script>
+		<script>
+			feather.replace()
+		</script>
+		<script>
+			function cancel() {
+				if(!confirm("确认取消？"))
+				{
+					return false;
+				}
+			}
+		</script>
+	</body>
+</html>

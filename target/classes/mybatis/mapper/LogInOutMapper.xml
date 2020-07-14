@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ncu.huaxin.attendancemanagement.mapper.LogInOutMapper">
+    <!--    public Employee getEmpById(Integer id);
+
+     public void insertEmp(Employee employee);-->
+    <select id="addLog" >
+        insert into inout_log(classId,userId,departId,inoutType,inoutTime) values (#{employee.classId},
+                #{employee.userId},#{employee.departId},#{type},#{date})
+    </select>
+
+    <select id="selectByClassId" resultType="LogInOut">
+        select * from inout_log where classId=#{classId}
+    </select>
+
+    <select id="selectAll" resultType="LogInOut">
+        select * from inout_log
+    </select>
+
+<!--    <insert id="insertEmp">-->
+<!--        INSERT INTO employee(username,email,gender,d_id) VALUES (#{lastName},#{email},#{gender},#{dId})-->
+<!--    </insert>-->
+</mapper>
