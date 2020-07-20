@@ -5,6 +5,7 @@ import ncu.huaxin.attendancemanagement.constant.Constant;
 import ncu.huaxin.attendancemanagement.entity.Application;
 import ncu.huaxin.attendancemanagement.entity.Employee;
 import ncu.huaxin.attendancemanagement.entity.HolidayLog;
+import ncu.huaxin.attendancemanagement.entity.PageBean;
 import ncu.huaxin.attendancemanagement.mapper.ApplicationMapper;
 import ncu.huaxin.attendancemanagement.mapper.HolidayLogMapper;
 import ncu.huaxin.attendancemanagement.service.ApplicationService;
@@ -97,13 +98,18 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<Application> selectByClassId(Integer classId) {
-        return applicationMapper.selectByClassId(classId);
+    public List<Application> selectByClassId(Employee employee) {
+        return applicationMapper.selectByClassId(employee);
     }
 
     @Override
-    public List<Application> selectByDepartId(Integer departId) {
-        return applicationMapper.selectByDepartId(departId);
+    public List<Application> selectByDepartId(Employee employee) {
+        return applicationMapper.selectByDepartId(employee);
+    }
+
+    @Override
+    public List<Application> selectByDepartId(Employee employee, Integer applyState, PageBean pageBean) {
+        return applicationMapper.selectByDepartId(employee,applyState,pageBean);
     }
 
     @Override
@@ -119,5 +125,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Application selectById(Integer applyId) {
         return applicationMapper.selectById(applyId);
+    }
+
+    @Override
+    public List<Application> getEmployeesByDepartId(Employee employee,Integer startIndex,Integer applyState) {
+        return applicationMapper.getEmployeesByDepartId(employee,startIndex,applyState);
     }
 }

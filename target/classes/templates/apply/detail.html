@@ -80,7 +80,7 @@
 						<label>结束时间</label>
 						<input name="endTime" type="text" class="form-control" disabled="disabled" th:value="${#dates.format(session.applicationTo.endTime, 'yyyy-MM-dd')}" >
 					</div>
-					<a  id="return" class="btn btn-primary" th:href="@{/application/getClassApply/0}" th:text="'返回'">返回</a>
+					<a  id="return" class="btn btn-primary" th:href="@{/application/listOneEmp/0}" th:text="'返回'">返回</a>
 				</main>
 			</div>
 		</div>

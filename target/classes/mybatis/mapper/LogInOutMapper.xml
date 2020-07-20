@@ -12,11 +12,19 @@
     </select>
 
     <select id="selectByClassId" resultType="LogInOut">
-        select * from inout_log where classId=#{classId}
+        select * from inout_log where classId=#{classId} order by inoutTime desc
     </select>
 
     <select id="selectAll" resultType="LogInOut">
-        select * from inout_log
+        select * from inout_log order by inoutTime desc
+    </select>
+
+    <select id="selectByEmpName" resultType="LogInOut">
+        select * from inout_log where userId = #{employee.userId} order by inoutTime desc
+    </select>
+
+    <select id="selectByDate" resultType="LogInOut">
+        select * from inout_log where DATE_FORMAT(inoutTime,'%Y-%m-%d') = #{date} order by inoutTime desc
     </select>
 
 <!--    <insert id="insertEmp">-->

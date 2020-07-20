@@ -52,4 +52,10 @@ public interface Constant {
      */
     String INOUT_TYPE_IN = "登入";
     String INOUT_TYPE_OUT = "登出";
+
+    /**
+     * 其他
+     * 1. 页面显示条数
+     */
+    Integer PAGE_SIZE=10;
 }

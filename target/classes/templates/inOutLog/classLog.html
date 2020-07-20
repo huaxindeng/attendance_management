@@ -50,14 +50,26 @@
 		<div class="container-fluid">
 			<div class="row">
 				<!--引入侧边栏-->
-				<div th:replace="commons/bar::#sidebar(activeUri='emps')"></div>
+				<div th:replace="commons/bar::#sidebar(activeUri='inOutLog')"></div>
 
 				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+
 					<h2>
-						<a class="btn btn-sm btn-success" th:href="@{/inoutLog/getClassInOut/0}">全部</a>
-						<a class="btn btn-sm btn-success" th:href="@{/inoutLog/getClassInOut/1}">登入</a>
-						<a class="btn btn-sm btn-success" th:href="@{/inoutLog/getClassInOut/2}">登出</a>
-						<a class="btn btn-sm btn-success" th:href="@{/inoutLog/getClassInOut/0}">返回</a>
+						<form th:action="@{/inoutLog/search}" method="post">
+							<input class="form-control  text-md-left" type="text" placeholder="请输入查询条件" aria-label="Search" name="searchBy">
+							<label class="text-sm-left m-2 small">
+								<input type="radio" class="custom-radio" name="searchType" size="10px" value="员工" checked >员工
+							</label>
+							<label class="text-sm-left m-2 small">
+								<input type="radio" name="searchType" th:style="'font-size:'+'10px'" value="日期" >日期
+							</label>
+							<button type="submit" id="submit" class="btn btn-primary"  th:text="'查询'">查询</button>
+
+						</form>
+						<a class="btn btn-sm btn-success " th:href="@{/inoutLog/getClassInOut/0}">全部</a>
+						<a class="btn btn-sm btn-success " th:href="@{/inoutLog/getClassInOut/1}">登入</a>
+						<a class="btn btn-sm btn-success " th:href="@{/inoutLog/getClassInOut/2}">登出</a>
+						<a class="btn btn-sm btn-success " th:href="@{/inoutLog/getClassInOut/0}">返回</a>
 					</h2>
 
 					<div class="table-responsive">
@@ -67,6 +79,7 @@
 									<th>编号</th>
 									<th>用户</th>
 									<th>班级</th>
+									<th>部门</th>
 									<th>操作类型</th>
 									<th>操作时间</th>
 <!--									<th>操作</th>-->
@@ -77,6 +90,7 @@
 									<td th:text="${inOut.inoutId}"></td>
 									<td th:text="${inOut.employee.username}"></td>
 									<td th:text="${inOut.classOf.className}"></td>
+									<td th:text="${inOut.department.departName}"></td>
 									<td th:text="${inOut.inoutType}"></td>
 									<td th:text="${#dates.format(inOut.inoutTime, 'yyyy-MM-dd')}"></td>
 <!--									<td th:text="${#dates.format(emp.birth, 'yyyy-MM-dd HH:mm')}"></td>-->

@@ -1,6 +1,9 @@
 package ncu.huaxin.attendancemanagement.service;
 
 import ncu.huaxin.attendancemanagement.entity.Application;
+import ncu.huaxin.attendancemanagement.entity.Employee;
+import ncu.huaxin.attendancemanagement.entity.PageBean;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -44,13 +47,19 @@ public interface ApplicationService {
      * 查看班级申请
      * @param classId
      */
-    List<Application> selectByClassId(Integer classId);
+    List<Application> selectByClassId(Employee employee);
 
     /**
      * 查看部门申请
-     * @param departId
+     * @param employee
      */
-    List<Application> selectByDepartId(Integer departId);
+    List<Application> selectByDepartId(Employee employee);
+
+    /**
+     * 查看部门申请
+     * @param
+     */
+    List<Application> selectByDepartId(Employee employee, Integer applyState, PageBean pageBean);
 
     /**
      * 同意申请
@@ -70,4 +79,11 @@ public interface ApplicationService {
      * @return
      */
     Application selectById(Integer applyId);
+
+    /**
+     * 查询今明两天的申请人员
+     * @param employee
+     * @return
+     */
+    List<Application> getEmployeesByDepartId(Employee employee,Integer startIndex,Integer applyState);
 }

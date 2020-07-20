@@ -1,9 +1,11 @@
 package ncu.huaxin.attendancemanagement.mapper;
 
 import ncu.huaxin.attendancemanagement.entity.Employee;
+import ncu.huaxin.attendancemanagement.entity.HolidayLog;
 import ncu.huaxin.attendancemanagement.entity.LogInOut;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import sun.rmi.runtime.Log;
 
 import java.util.Date;
 import java.util.List;
@@ -34,5 +36,20 @@ public interface LogInOutMapper {
      * @return
      */
     List<LogInOut> selectAll();
+
+    /**
+     * 根据员工查询操作记录
+     * @param employee
+     * @return
+     */
+    List<LogInOut> selectByEmpName(@Param("employee") Employee employee );
+
+    /**
+     * 通过日期查询操作记录
+     * @param date
+     * @return
+     */
+    List<LogInOut> selectByDate(String date);
+
 
 }

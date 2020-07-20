@@ -13,7 +13,20 @@
     </insert>
 
     <select id="selectByClassId" resultType="HolidayLog">
-        select * from holiday_log where classId=#{classId}
+        select * from holiday_log where classId=#{classId} order by logTime desc
+    </select>
+
+    <select id="selectAll" resultType="HolidayLog">
+        select * from holiday_log order by logTime desc
+    </select>
+
+
+    <select id="selectByEmpName" resultType="HolidayLog">
+        select * from holiday_log where userId = #{employee.userId} order by logTime desc
+    </select>
+
+    <select id="selectByDate" resultType="HolidayLog">
+        select * from holiday_log where DATE_FORMAT(logTime,'%Y-%m-%d') = #{date} order by logTime desc
     </select>
 
 <!--    <select id="selectByClassId" parameterType="LogInOut" resultType="java.util.List">-->

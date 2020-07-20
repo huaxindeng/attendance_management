@@ -35,4 +35,14 @@ public class LogInOutServiceImpl implements LogInOutService {
     public List<LogInOut> selectAll() {
         return logInOutMapper.selectAll();
     }
+
+    @Override
+    public List<LogInOut> selectByEmpName(Employee employee) {
+        return logInOutMapper.selectByEmpName(employee);
+    }
+
+    @Override
+    public List<LogInOut> selectByDate(String date) {
+        return logInOutMapper.selectByDate(date);
+    }
 }

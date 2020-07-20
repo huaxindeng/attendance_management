@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import ncu.huaxin.attendancemanagement.constant.Constant;
 import ncu.huaxin.attendancemanagement.entity.Application;
 import ncu.huaxin.attendancemanagement.entity.Employee;
+import ncu.huaxin.attendancemanagement.entity.PageBean;
 import ncu.huaxin.attendancemanagement.service.ApplicationService;
 import ncu.huaxin.attendancemanagement.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -97,10 +99,10 @@ public class ApplicationController {
             session.setAttribute("applyState",3);
         }
 
-        log.info("**********ApplicationController.submit.userId-->"+employee.toString());
+        log.info("**********ApplicationController.listOneEmp.userId-->"+employee.toString());
         session.setAttribute("applicationList",applicationList);
-        log.info("**********ApplicationController.submit.applicationList-->"+applicationList.toString());
-        return "emp/list";
+        log.info("**********ApplicationController.listOneEmp.applicationList-->"+applicationList.toString());
+        return "emp/myApply";
     }
 
     @PostMapping("/application/modify")
@@ -132,7 +134,7 @@ public class ApplicationController {
     public String getDepartApply(@PathVariable("applyState") Integer applyState,HttpSession session){
         Employee employee = (Employee) session.getAttribute("emp");
 
-        List<Application> applicationDepartList = applicationService.selectByDepartId(employee.getDepartId());
+        List<Application> applicationDepartList = applicationService.selectByDepartId(employee);
 
         for(int i=0;i<applicationDepartList.size();i++){
             applicationDepartList.get(i).setEmployee(employeeService.getEmployeeById(applicationDepartList.get(i).getUserId()));
@@ -194,7 +196,7 @@ public class ApplicationController {
     public String getClassApply(@PathVariable("applyState") Integer applyState,HttpSession session){
         Employee employee = (Employee) session.getAttribute("emp");
 
-        List<Application> applicationClassList = applicationService.selectByClassId(employee.getClassId());
+        List<Application> applicationClassList = applicationService.selectByClassId(employee);
 
         log.info("***************ApplicationController.getClassApply.applicationClassList(NoEmployee):"+applicationClassList.toString());
 
@@ -294,5 +296,50 @@ public class ApplicationController {
         application.setApplyReason(denyReason);
         applicationService.deny(application);
         return "redirect:/application/getClassApply/"+employee.getClassId();
+    }
+
+//    @GetMapping("/application/getDepartApply/{applyState}")
+    public String getDepartApply(@PathVariable("applyState") Integer applyState, HttpSession session, HttpServletRequest req){
+        Employee employee = (Employee) session.getAttribute("emp");
+
+        int pageNumber = 1;
+        try {
+            pageNumber = Integer.parseInt(req.getParameter("pageNumber"));
+        } catch (NumberFormatException e) {
+        }
+
+        int pageSize = Constant.PAGE_SIZE;
+        //调用service 分页查询商品参数：3个，返回值：pagebean
+        PageBean pageBean = new PageBean(pageNumber,pageSize);
+        List<Application> applicationDepartList =  applicationService.selectByDepartId(employee,applyState,pageBean);
+        log.info("***************ApplicationController.getDepartApply.applicationDepartList",applicationDepartList.toArray());
+
+        //将pagebean放入request中，请求转发product_list.jsp
+        req.setAttribute("applicationDepartList",applicationDepartList);
+
+        return "emp/departApply";
+
+    }
+
+    @GetMapping("/application/getRecent/{applyState}/{pageNumber}")
+    public String getRecentApplyByDepartId(@PathVariable("applyState") Integer applyState,@PathVariable("pageNumber")Integer pageNumber, HttpSession session){
+        Employee employee = (Employee) session.getAttribute("emp");
+
+        int startIndex = (pageNumber-1)*Constant.PAGE_SIZE;
+
+        List<Application> recentDepartList = applicationService.getEmployeesByDepartId(employee,startIndex,applyState);
+
+        for(int i=0;i<recentDepartList.size();i++){
+            recentDepartList.get(i).setEmployee(employeeService.getEmployeeById(recentDepartList.get(i).getUserId()));
+        }
+
+
+        log.info("**********ApplicationController.submit.userId-->"+employee.toString());
+
+        log.info("***************ApplicationController.getDepartApply.applicationDepartList:"+recentDepartList.toString());
+
+        session.setAttribute("recentDepartList",recentDepartList);
+        return "emp/recentEmp";
+
     }
 }

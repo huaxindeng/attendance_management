@@ -32,6 +32,15 @@ public class LogInOut implements Serializable {
 
     private Integer userId;
     private Class classOf;
+    private Department department;
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
 
     @Override
     public String toString() {

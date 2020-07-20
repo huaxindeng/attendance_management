@@ -36,6 +36,15 @@ public class HolidayLog implements Serializable {
 
     private Integer userId;
     private Application application;
+    private Department department;
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
 
     @Override
     public String toString() {

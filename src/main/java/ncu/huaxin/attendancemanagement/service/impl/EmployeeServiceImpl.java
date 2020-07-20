@@ -6,6 +6,8 @@ import ncu.huaxin.attendancemanagement.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @Author huaxin
  * @Date 2020/7/5
@@ -29,5 +31,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void addEmployee(Employee employee) {
         employeeMapper.addEmp(employee);
+    }
+
+    @Override
+    public List<Employee> selectEmpByName(String username) {
+        return employeeMapper.selectEmpByName(username);
     }
 }

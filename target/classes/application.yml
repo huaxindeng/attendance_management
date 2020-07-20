@@ -22,3 +22,8 @@ mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mybatis/mapper/*Mapper.xml
   type-aliases-package: ncu.huaxin.attendancemanagement.entity
+
+logging:
+  level:
+    main.blog.mapper: trace
+

@@ -34,4 +34,19 @@ public class HolidayLogServiceImpl implements HolidayLogService {
     public List<HolidayLog> selectByClassId(Integer classId) {
         return holidayLogMapper.selectByClassId(classId);
     }
+
+    @Override
+    public List<HolidayLog> selectAll() {
+        return holidayLogMapper.selectAll();
+    }
+
+    @Override
+    public List<HolidayLog> selectByEmpName(Employee employee) {
+        return holidayLogMapper.selectByEmpName(employee);
+    }
+
+    @Override
+    public List<HolidayLog> selectByDate(String date) {
+        return holidayLogMapper.selectByDate(date);
+    }
 }

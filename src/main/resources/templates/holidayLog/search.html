@@ -50,16 +50,21 @@
 		<div class="container-fluid">
 			<div class="row">
 				<!--引入侧边栏-->
-				<div th:replace="commons/bar::#sidebar(activeUri='emps')"></div>
+				<div th:replace="commons/bar::#sidebar(activeUri='holidayLog')"></div>
 
 				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
 					<h2>
-						<a class="btn btn-sm btn-success" th:href="@{/emp/apply}">新建申请</a>
-						<a class="btn btn-sm btn-success" th:href="@{/emp/list/0}">全部申请</a>
-						<a class="btn btn-sm btn-success" th:href="@{/emp/list/1}">未审核</a>
-						<a class="btn btn-sm btn-success" th:href="@{/emp/list/2}">已审核</a>
-						<a class="btn btn-sm btn-success" th:href="@{/emp/list/3}">已取消</a>
-						<a class="btn btn-sm btn-success" th:href="@{/emp/list/0}">返回</a>
+						<form th:action="@{/holidayLog/search}" method="post">
+							<input class="form-control  text-md-left" type="text" placeholder="请输入查询条件" aria-label="Search" name="searchBy">
+							<label class="text-sm-left m-2 small">
+								<input type="radio" class="custom-radio" name="searchType" size="10px" value="员工" checked >员工
+							</label>
+							<label class="text-sm-left m-2 small">
+								<input type="radio" name="searchType" th:style="'font-size:'+'10px'" value="日期" >日期
+							</label>
+							<button type="submit" id="submit" class="btn btn-primary"  th:text="'查询'">查询</button>
+							<a  id="return" class="btn btn-primary" th:href="@{/holidayLog/getClassLog/0}" th:text="'返回'">返回</a>
+						</form>
 					</h2>
 
 					<div class="table-responsive">
@@ -67,28 +72,24 @@
 							<thead>
 								<tr>
 									<th>编号</th>
+									<th>申请人</th>
+									<th>班级</th>
+									<th>部门</th>
 									<th>申请类型</th>
-									<th>申请状态</th>
-									<th>开始日期</th>
-									<th>结束日期</th>
-									<th>操作</th>
+									<th>操作类型</th>
+									<th>操作时间</th>
+<!--									<th>操作</th>-->
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="a:${session.applicationList}">
-									<td th:text="${a.applyId}"></td>
-									<td th:text="${a.applyType}"></td>
-									<td th:text="${a.applyState}"></td>
-									<td th:text="${#dates.format(a.startTime, 'yyyy-MM-dd')}"></td>
-									<td th:text="${#dates.format(a.endTime, 'yyyy-MM-dd')}"></td>
-<!--									<td th:text="${#dates.format(emp.birth, 'yyyy-MM-dd HH:mm')}"></td>-->
-									<td th:if="${a.applyState eq '提交' or a.applyState eq '修改' }  ">
-										<a class="btn btn-sm btn-primary" th:href="@{/emp/modify/}+${a.applyId}">编辑</a>
-										<a th:href="@{/application/cancel/}+${a.applyId}" class="btn btn-sm btn-danger cancelBtn" onclick="return cancel()">取消</a>
-									</td>
-									<td th:if="${a.applyState eq '同意' or a.applyState eq '拒绝'  or a.applyState eq '取消'}  " >
-										<a class="btn btn-sm btn-primary" th:href="@{/application/applyDetail/}+${a.applyId}">查看</a>
-									</td>
+								<tr th:each="log:${session.searchList}">
+									<td th:text="${log.holidayId}"></td>
+									<td th:text="${log.employee.username}"></td>
+									<td th:text="${log.classOf.className}"></td>
+									<td th:text="${log.department.departName}"></td>
+									<td th:text="${log.application.applyType}"></td>
+									<td th:text="${log.holidayState}"></td>
+									<td th:text="${#dates.format(log.logTime, 'yyyy-MM-dd')}"></td>
 								</tr>
 							</tbody>
 						</table>
@@ -112,7 +113,7 @@
 		</script>
 		<script>
 			function cancel() {
-				if(!confirm("确认取消？"))
+				if(!confirm("确认拒绝？"))
 				{
 					return false;
 				}

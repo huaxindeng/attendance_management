@@ -1,5 +1,6 @@
 package ncu.huaxin.attendancemanagement.mapper;
 
+import ncu.huaxin.attendancemanagement.entity.Employee;
 import ncu.huaxin.attendancemanagement.entity.HolidayLog;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -25,5 +26,25 @@ public interface HolidayLogMapper {
      * @return
      */
     List<HolidayLog> selectByClassId(Integer classId);
+
+    /**
+     * 查找所有的申请记录
+     * @return
+     */
+    List<HolidayLog> selectAll();
+
+    /**
+     * 根据员工查询操作记录
+     * @param employee
+     * @return
+     */
+    List<HolidayLog> selectByEmpName(@Param("employee") Employee employee );
+
+    /**
+     * 通过日期查询操作记录
+     * @param date
+     * @return
+     */
+    List<HolidayLog> selectByDate(String date);
 
 }

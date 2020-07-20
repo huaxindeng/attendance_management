@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author huaxin
@@ -35,6 +36,13 @@ public interface EmployeeMapper {
      * @return
      */
     Employee addEmp(@Param("employee") Employee employee);
+
+    /**
+     * 通过名字模糊查询员工
+     * @param username
+     * @return
+     */
+    List<Employee> selectEmpByName(String username);
 
 
 }

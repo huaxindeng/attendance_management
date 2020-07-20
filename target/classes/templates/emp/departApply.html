@@ -50,7 +50,7 @@
 		<div class="container-fluid">
 			<div class="row">
 				<!--引入侧边栏-->
-				<div th:replace="commons/bar::#sidebar(activeUri='emps')"></div>
+				<div th:replace="commons/bar::#sidebar(activeUri='departApply')"></div>
 
 				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
 					<h2>
@@ -75,7 +75,8 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="a:${session.applicationDepartList}">
+							<div th:each="a:${session.applicationDepartList}" th:switch="${a.applyState}">
+								<tr th:case="'拒绝'" th:style="'background:#C7EDCC'">
 									<td th:text="${a.applyId}"></td>
 									<td th:text="${a.employee.username}"></td>
 									<td th:text="${a.applyType}"></td>
@@ -84,12 +85,41 @@
 									<td th:text="${#dates.format(a.endTime, 'yyyy-MM-dd')}"></td>
 <!--									<td th:text="${#dates.format(emp.birth, 'yyyy-MM-dd HH:mm')}"></td>-->
 									<td >
-										<a class="btn btn-sm btn-primary" th:href="@{/application/agree/}+${a.applyId}">同意</a>
-										<a class="btn btn-sm btn-primary" th:href="@{/application/deny/}+${a.applyId}">拒绝</a>
-
+										<a class="btn btn-sm btn-primary" th:href="@{/application/applyDetail/}+${a.applyId}">查看</a>
 									</td>
 								</tr>
+								<tr th:case="*" >
+									<td th:text="${a.applyId}"></td>
+									<td th:text="${a.employee.username}"></td>
+									<td th:text="${a.applyType}"></td>
+									<td th:text="${a.applyState}"></td>
+									<td th:text="${#dates.format(a.startTime, 'yyyy-MM-dd')}"></td>
+									<td th:text="${#dates.format(a.endTime, 'yyyy-MM-dd')}"></td>
+									<!--									<td th:text="${#dates.format(emp.birth, 'yyyy-MM-dd HH:mm')}"></td>-->
+									<td th:if="${a.applyState eq '提交' or a.applyState eq '修改' }  ">
+										<a class="btn btn-sm btn-primary" th:href="@{/application/agree/}+${a.applyId}">同意</a>
+										<a th:href="@{/emp/deny/}+${a.applyId}" class="btn btn-sm btn-danger cancelBtn" onclick="return cancel()">拒绝</a>
+									</td>
+									<td th:if="${a.applyState eq '同意' or a.applyState eq '拒绝'  or a.applyState eq '取消'}  " >
+										<a class="btn btn-sm btn-primary" th:href="@{/application/applyDetail/}+${a.applyId}">查看</a>
+									</td>
+								</tr>
+							</div>
+
 							</tbody>
+<!--							<tr align="center">-->
+<!--								<td colspan="7">-->
+<!--									第<th:value="pageBean.page"/>/<th:value="pageBean.totalPage"/>页-->
+<!--									<th:if test="pageBean.page != 1">-->
+<!--										<a href="${ pageContext.request.contextPath }/userAdmin_findAll.action?page=1">首页</a>|-->
+<!--										<a href="${ pageContext.request.contextPath }/userAdmin_findAll.action?page=<s:property value="pageBean.page-1"/>">上一页</a>|-->
+<!--									</th:if>-->
+<!--									<s:if test="pageBean.page != pageBean.totalPage">-->
+<!--										<a href="${ pageContext.request.contextPath }/userAdmin_findAll.action?page=<s:property value="pageBean.page+1"/>">下一页</a>|-->
+<!--										<a href="${ pageContext.request.contextPath }/userAdmin_findAll.action?page=<s:property value="pageBean.totalPage"/>">尾页</a>|-->
+<!--									</s:if>-->
+<!--								</td>-->
+<!--							</tr>-->
 						</table>
 					</div>
 				</main>
