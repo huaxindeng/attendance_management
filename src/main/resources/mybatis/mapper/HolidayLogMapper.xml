@@ -7,17 +7,48 @@
 
      public void insertEmp(Employee employee);-->
     <insert id="addHolidayLog" >
-        insert into holiday_log(userId,classId,departId,holidayType,holidayState,applyId) values(#{holidayLog.employee.userId},
+        insert into holiday_log(userId,classId,departId,holidayType,holidayState,applyId,logTime) values(#{holidayLog.employee.userId},
                 #{holidayLog.employee.classId},#{holidayLog.employee.departId},#{holidayLog.holidayType},
-                #{holidayLog.holidayState},#{holidayLog.employee.classId})
+                #{holidayLog.holidayState},#{holidayLog.employee.classId},#{holidayLog.logTime})
     </insert>
 
     <select id="selectByClassId" resultType="HolidayLog">
-        select * from holiday_log where classId=#{classId} order by logTime desc
+        select * from holiday_log where classId=#{classId} and
+        <choose>
+            <when test="holidayState==0">
+                1=1
+            </when>
+            <when test="holidayState==1">
+                (holidayState='申请')
+            </when>
+            <when test="holidayState==2">
+                (holidayState='修改' )
+            </when>
+            <when test="holidayState==3">
+                holidayState='取消'
+            </when>
+        </choose>
+
+        order by logTime desc
     </select>
 
     <select id="selectAll" resultType="HolidayLog">
-        select * from holiday_log order by logTime desc
+        select * from holiday_log and
+        <choose>
+            <when test="holidayState==0">
+                1=1
+            </when>
+            <when test="holidayState==1">
+                (holidayState='申请')
+            </when>
+            <when test="holidayState==2">
+                (holidayState='修改' )
+            </when>
+            <when test="holidayState==3">
+                holidayState='取消'
+            </when>
+        </choose>
+        order by logTime desc
     </select>
 
 

@@ -89,7 +89,7 @@
 									<td th:text="${log.department.departName}"></td>
 									<td th:text="${log.application.applyType}"></td>
 									<td th:text="${log.holidayState}"></td>
-									<td th:text="${#dates.format(log.logTime, 'yyyy-MM-dd')}"></td>
+									<td th:text="${#dates.format(log.logTime, 'yyyy-MM-dd hh:mm:dd')}"></td>
 								</tr>
 							</tbody>
 						</table>

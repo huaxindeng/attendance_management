@@ -24,13 +24,13 @@ public interface LogInOutService {
      * @param classId
      * @return
      */
-    List<LogInOut> selectByClassId(Integer classId);
+    List<LogInOut> selectByClassId(Integer classId,Integer inOutState);
 
     /**
      * 查询所有登入登出记录
      * @return
      */
-    List<LogInOut> selectAll();
+    List<LogInOut> selectAll(Integer inOutState);
 
     /**
      * 根据员工查询操作记录

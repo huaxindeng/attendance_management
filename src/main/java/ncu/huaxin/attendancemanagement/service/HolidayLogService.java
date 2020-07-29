@@ -4,6 +4,7 @@ import ncu.huaxin.attendancemanagement.entity.Application;
 import ncu.huaxin.attendancemanagement.entity.Employee;
 import ncu.huaxin.attendancemanagement.entity.HolidayLog;
 import org.apache.ibatis.annotations.Param;
+import sun.plugin.viewer.context.IExplorerAppletContext;
 
 import java.util.List;
 
@@ -18,13 +19,13 @@ public interface HolidayLogService {
      */
     void addHolidayLog(HolidayLog holidayLog);
 
-    List<HolidayLog> selectByClassId(Integer classId);
+    List<HolidayLog> selectByClassId(Integer classId, Integer holidayState);
 
     /**
      * 查找所有的申请记录
      * @return
      */
-    List<HolidayLog> selectAll();
+    List<HolidayLog> selectAll(Integer holidayState);
 
     /**
      * 根据员工查询操作记录

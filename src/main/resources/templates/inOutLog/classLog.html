@@ -66,10 +66,10 @@
 							<button type="submit" id="submit" class="btn btn-primary"  th:text="'查询'">查询</button>
 
 						</form>
-						<a class="btn btn-sm btn-success " th:href="@{/inoutLog/getClassInOut/0}">全部</a>
-						<a class="btn btn-sm btn-success " th:href="@{/inoutLog/getClassInOut/1}">登入</a>
-						<a class="btn btn-sm btn-success " th:href="@{/inoutLog/getClassInOut/2}">登出</a>
-						<a class="btn btn-sm btn-success " th:href="@{/inoutLog/getClassInOut/0}">返回</a>
+						<a class="btn btn-sm btn-success " th:href="@{/inoutLog/getClassInOut(inOutState=0)}">全部</a>
+						<a class="btn btn-sm btn-success " th:href="@{/inoutLog/getClassInOut(inOutState=1)}">登入</a>
+						<a class="btn btn-sm btn-success " th:href="@{/inoutLog/getClassInOut(inOutState=2)}">登出</a>
+						<a class="btn btn-sm btn-success " th:href="@{/inoutLog/getClassInOut(inOutState=0)}">返回</a>
 					</h2>
 
 					<div class="table-responsive">
@@ -99,6 +99,50 @@
 <!--									</td>-->
 								</tr>
 							</tbody>
+							<tfoot>
+							<tr >
+								<!--分页文字信息  -->
+								<td colspan="4">
+									<div class="col-md-8 ">
+										当前 <span th:text="${pageInfo.pageNum }" ></span>页,总<span th:text="${pageInfo.pages}" ></span>页,总 <span th:text="${pageInfo.total }" ></span>条记录
+									</div>
+								</td>
+								<td></td>
+								<td  colspan="3">
+									<!-- 分页条信息 -->
+									<div class="col-md-12">
+										<nav aria-label="Page navigation">
+											<ul class="pagination">
+												<li><a th:href="@{/inoutLog/getClassInOut(pn=1,inOutState=${inOutState})}"  >首页</a></li>
+												<li th:if="${pageInfo.hasPreviousPage }">
+													<a th:href="@{/inoutLog/getClassInOut(pn=${pageInfo.pageNum-1},inOutState=${inOutState})}"
+													   aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+													</a>
+												</li>
+
+												<div th:each="page_Num:${pageInfo.navigatepageNums}" >
+													<li  th:if="${page_Num eq pageInfo.pageNum }" class="active">
+														<a href="#"><span th:text="${page_Num}"></span></a>
+													</li>
+													<li th:if="${page_Num ne pageInfo.pageNum }">
+														<a th:href="@{/inoutLog/getClassInOut(pn=${page_Num},inOutState=${inOutState})}">
+															<span th:text="${page_Num}"></span>
+														</a>
+													</li>
+												</div>
+												<li th:if="${pageInfo.hasNextPage }">
+													<a th:href="@{/inoutLog/getClassInOut(pn=${pageInfo.pageNum+1},inOutState=${inOutState})}"
+													   aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+													</a></li>
+												<li>
+													<a th:href="@{/inoutLog/getClassInOut(pn=${pageInfo.pages},inOutState=${inOutState})}">末页</a>
+												</li>
+											</ul>
+										</nav>
+									</div>
+								</td>
+
+							</tfoot>
 						</table>
 					</div>
 				</main>

@@ -41,7 +41,7 @@ public class LoginController {
             log.info("*********************/emp/login/,用户存在:"+empByLogin.toString());
             logInOutService.addLog(empByLogin, Constant.INOUT_TYPE_IN);
             if(empByLogin.getPosition().equals(Constant.EMPLOYEE_POSITION_LEADER)){
-                return "redirect:/application/getRecent/0/1";
+                return "redirect:/application/getRecent";
             }
             return "redirect:/emp/list/0";
         }else {

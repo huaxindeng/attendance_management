@@ -31,13 +31,13 @@ public class HolidayLogServiceImpl implements HolidayLogService {
     }
 
     @Override
-    public List<HolidayLog> selectByClassId(Integer classId) {
-        return holidayLogMapper.selectByClassId(classId);
+    public List<HolidayLog> selectByClassId(Integer classId,Integer holidayState) {
+        return holidayLogMapper.selectByClassId(classId,holidayState);
     }
 
     @Override
-    public List<HolidayLog> selectAll() {
-        return holidayLogMapper.selectAll();
+    public List<HolidayLog> selectAll(Integer holidayState) {
+        return holidayLogMapper.selectAll(holidayState);
     }
 
     @Override

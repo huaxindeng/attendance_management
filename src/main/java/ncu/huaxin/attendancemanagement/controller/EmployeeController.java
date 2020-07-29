@@ -38,33 +38,6 @@ public class EmployeeController {
     @Autowired
     private ApplicationService applicationService;
 
-//    //登陆操作
-//    @PostMapping("/emp/login")
-//    public String login(@RequestParam("username") String username,
-//                          @RequestParam("password") String password,
-//                          Map<String,Object> map, HttpSession session){
-//        Employee empByLogin = employeeService.getEmpByLogin(username, password);
-//
-//        if(empByLogin!=null){
-//            session.setAttribute("emp",empByLogin);
-//            log.info("*********************/emp/login/,用户存在:"+empByLogin.toString());
-//            logInOutService.addLog(empByLogin, Constant.INOUT_TYPE_IN);
-//            return "redirect:/emp/list/0";
-//        }else {
-//            map.put("msg","登陆失败");
-//            log.info("*********************/emp/login/,用户不存在:"+"/(ㄒoㄒ)/~~");
-//            return "login";
-//        }
-//    }
-//
-//    //登出操作
-//    @GetMapping("/emp/logout")
-//    public String logout(HttpSession session){
-//        Employee employee = (Employee) session.getAttribute("emp");
-//        logInOutService.addLog(employee,Constant.INOUT_TYPE_OUT);
-//        session.removeAttribute("emp");
-//        return "login";
-//    }
 
     //跳转到申请页面
     @GetMapping("/emp/apply")
@@ -77,6 +50,7 @@ public class EmployeeController {
         if(session.getAttribute("applicationNow")!=null){
             log.info("********************apply:applyicatioNow-->"+session.getAttribute("applicationNow").toString());
             log.info("********************apply.applicationNow!=null");
+
             return "emp/modify";
         }
         return "emp/apply";
@@ -85,7 +59,7 @@ public class EmployeeController {
     //显示申请
     @GetMapping("/emp/list/{applyState}")
     public String listMyApplication(@PathVariable("applyState") Integer applyState, HttpSession session){
-        return "redirect:/application/listOneEmp/"+applyState;
+        return "redirect:/application/listOneEmp?applyState="+applyState;
     }
 
     @GetMapping("/emp/modify/{applyId}")

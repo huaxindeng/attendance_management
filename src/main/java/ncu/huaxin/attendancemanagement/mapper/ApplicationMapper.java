@@ -46,19 +46,19 @@ public interface ApplicationMapper {
      * 查看员工个人申请
      * @param userId
      */
-    List<Application> selectByUserId(Integer userId);
+    List<Application> selectByUserId(Integer userId,Integer applyState);
 
     /**
      * 查看班级申请
      * @param employee
      */
-    List<Application> selectByClassId(@Param("employee") Employee employee);
+    List<Application> selectByClassId(@Param("employee") Employee employee,Integer applyState);
 
     /**
      * 查看部门申请
      * @param employee
      */
-    List<Application> selectByDepartId(@Param("employee") Employee employee);
+    List<Application> selectByDepartId(@Param("employee") Employee employee,Integer applyState);
 
     /**
      * 查看部门申请
@@ -90,7 +90,7 @@ public interface ApplicationMapper {
      * @param employee
      * @return
      */
-    List<Application> getEmployeesByDepartId(@Param("employee") Employee employee,Integer startIndex,Integer applyState);
+    List<Application> getEmployeesByDepartId(@Param("employee") Employee employee,Integer applyState);
 
 }
 

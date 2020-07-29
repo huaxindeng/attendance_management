@@ -1,6 +1,6 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="">
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -54,7 +54,7 @@
 
 				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
 					<h2>
-						<a class="btn btn-sm btn-success" th:href="@{/emp/apply}">新建申请</a>
+						<a class="btn btn-sm btn-success" th:href="@{/emp/apply}" >新建申请</a>
 						<a class="btn btn-sm btn-success" th:href="@{/emp/list/0}">全部申请</a>
 						<a class="btn btn-sm btn-success" th:href="@{/emp/list/1}">未审核</a>
 						<a class="btn btn-sm btn-success" th:href="@{/emp/list/2}">已审核</a>
@@ -75,7 +75,7 @@
 								</tr>
 							</thead>
 							<tbody>
-							<div th:each="a:${session.applicationList}" th:switch="${a.applyState}">
+							<div th:each="a:${session.applicationList}" th:switch="${a.applyState}" >
 								<tr th:case="'拒绝'" th:style="'background:#C7EDCC'">
 									<td th:text="${a.applyId}"></td>
 									<td th:text="${a.applyType}"></td>
@@ -102,9 +102,55 @@
 										<a class="btn btn-sm btn-primary" th:href="@{/application/applyDetail/}+${a.applyId}">查看</a>
 									</td>
 								</tr>
+
 							</div>
 
 							</tbody>
+							<tfoot>
+							<tr >
+								<!--分页文字信息  -->
+								<td colspan="4">
+									<div class="col-md-8 ">
+										当前 <span th:text="${pageInfo.pageNum }" ></span>页,总<span th:text="${pageInfo.pages}" ></span>页,总 <span th:text="${pageInfo.total }" ></span>条记录
+									</div>
+								</td>
+								<td></td>
+								<td  colspan="3">
+									<!-- 分页条信息 -->
+<!--									<div class="col-md-12">-->
+										<nav aria-label="Page navigation">
+											<ul class="pagination">
+												<li><a th:href="@{/application/listOneEmp(pn=1,applyState=${applyState})}"  >首页</a></li>
+												<li th:if="${pageInfo.hasPreviousPage }">
+													<a th:href="@{/application/listOneEmp(pn=${pageInfo.pageNum-1},applyState=${applyState})}"
+													   aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+													</a>
+												</li>
+
+												<div th:each="page_Num:${pageInfo.navigatepageNums}" >
+													<li  th:if="${page_Num eq pageInfo.pageNum }" class="active">
+														<a href="#"><span th:text="${page_Num}"></span></a>
+													</li>
+													<li th:if="${page_Num ne pageInfo.pageNum }">
+														<a th:href="@{/application/listOneEmp(pn=${page_Num},applyState=${applyState})}">
+															<span th:text="${page_Num}"></span>
+														</a>
+													</li>
+												</div>
+												<li th:if="${pageInfo.hasNextPage }">
+													<a th:href="@{/application/listOneEmp(pn=${pageInfo.pageNum+1},applyState=${applyState})}"
+													   aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+												</a></li>
+												<li>
+													<a th:href="@{/application/listOneEmp(pn=${pageInfo.pages},applyState=${applyState})}">末页</a>
+												</li>
+											</ul>
+										</nav>
+<!--									</div>-->
+								</td>
+
+							</tfoot>
+						</table>
 						</table>
 					</div>
 				</main>

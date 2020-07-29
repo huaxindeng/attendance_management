@@ -35,7 +35,7 @@
             <li class="nav-item">
                 <a class="nav-link"
                    th:class="${activeUri=='recent'?'nav-link active':'nav-link'}"
-                   href="#" th:href="@{/application/getRecent/0/1}">
+                   href="#" th:href="@{/application/getRecent}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
                         <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
                         <polyline points="13 2 13 9 20 9"></polyline>
@@ -46,7 +46,7 @@
             <li class="nav-item" th:if="${session.emp.position} eq '领导'">
                 <a class="nav-link"
                    th:class="${activeUri=='departApply'?'nav-link active':'nav-link'}"
-                   href="#" th:href="@{/application/getDepartApply/0}">
+                   href="#" th:href="@{/application/getDepartApply}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
                         <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
                         <polyline points="13 2 13 9 20 9"></polyline>
@@ -57,7 +57,7 @@
             <li class="nav-item" th:if="${session.emp.position} eq '班长'">
                 <a class="nav-link"
                    th:class="${activeUri=='classApply'?'nav-link active':'nav-link'}"
-                   href="#" th:href="@{/application/getClassApply/0}">
+                   href="#" th:href="@{/application/getClassApply}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart">
                         <circle cx="9" cy="21" r="1"></circle>
                         <circle cx="20" cy="21" r="1"></circle>
@@ -69,7 +69,7 @@
             <li class="nav-item" th:if="${session.emp.position} eq '领导' or ${session.emp.position} eq '班长' ">
                 <a class="nav-link"
                    th:class="${activeUri=='holidayLog'?'nav-link active':'nav-link'}"
-                   th:href="@{/holidayLog/getClassLog/0}">
+                   th:href="@{/holidayLog/getClassLog}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                         <circle cx="9" cy="7" r="4"></circle>
@@ -82,7 +82,7 @@
             <li class="nav-item" th:if="${session.emp.position} eq '领导' or ${session.emp.position} eq '班长' ">
                 <a class="nav-link"
                    th:class="${activeUri=='inOutLog'?'nav-link active':'nav-link'}"
-                   th:href="@{/inoutLog/getClassInOut/0}">
+                   th:href="@{/inoutLog/getClassInOut}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart-2">
                         <line x1="18" y1="20" x2="18" y2="10"></line>
                         <line x1="12" y1="20" x2="12" y2="4"></line>

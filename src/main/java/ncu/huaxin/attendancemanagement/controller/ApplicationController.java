@@ -1,5 +1,7 @@
 package ncu.huaxin.attendancemanagement.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import ncu.huaxin.attendancemanagement.constant.Constant;
 import ncu.huaxin.attendancemanagement.entity.Application;
@@ -9,9 +11,11 @@ import ncu.huaxin.attendancemanagement.service.ApplicationService;
 import ncu.huaxin.attendancemanagement.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -48,56 +52,19 @@ public class ApplicationController {
         return "redirect:/emp/list/0";
     }
 
-    @GetMapping("/application/listOneEmp/{applyState}")
-    public String listOneEmp(@PathVariable("applyState")Integer applyState,HttpSession session){
+    @GetMapping("/application/listOneEmp")
+    public String listOneEmp(@RequestParam(value = "applyState",defaultValue = "0") Integer applyState,
+                             @RequestParam(value = "pn",defaultValue = "1") Integer pn,
+                             HttpSession session, Model model){
         Employee employee = (Employee)session.getAttribute("emp");
-        List<Application> applicationList = applicationService.selectByUserId(employee.getUserId());
-        //全部
-        session.setAttribute("applyState",0);
+        log.info("**********ApplicationController.listOneEmp.applyState-->"+applyState);
 
-        if(applyState==1){
-            //未审核
-            for(int i=0;i<applicationList.size();i++){
-                Application a = applicationList.get(i);
-                log.info("***********a.applyState"+a.getApplyState());
-                if(a.getApplyState().equals(Constant.APPLICATION_STATE_AGREE)||
-                        a.getApplyState().equals(Constant.APPLICATION_STATE_DENY) ||
-                        a.getApplyState().equals(Constant.APPLICATION_STATE_CANCEL)) {
-                    applicationList.remove(a);
-                    i--;
-                }
-            }
-            session.setAttribute("applyState",1);
-        }
-        else if(applyState==2) {
-            //已审核
-            log.info("********ApplicationController.listOneEmp.applicationList:"+applicationList.toString());
-            for(int i=0;i<applicationList.size();i++){
-                Application a = applicationList.get(i);
-                log.info("***********a.applyState"+a.getApplyState()+"applyId"+a.getApplyId());
-                if (a.getApplyState().equals(Constant.APPLICATION_STATE_SUBMIT) ||
-                        a.getApplyState().equals(Constant.APPLICATION_STATE_MODIFY) ||
-                        a.getApplyState().equals(Constant.APPLICATION_STATE_CANCEL)) {
-                    applicationList.remove(a);
-                    i--;
-                }
-            }
-            session.setAttribute("applyState",2);
-            log.info("********ApplicationController.listOneEmp.applicationList.已审核:"+applicationList.toString());
 
-        }
-        else if(applyState==3){
-            //已取消
-            for(int i=0;i<applicationList.size();i++){
-                Application a = applicationList.get(i);
-                log.info("***********a.applyState"+a.getApplyState()+"applyId"+a.getApplyId());
-                if (!a.getApplyState().equals(Constant.APPLICATION_STATE_CANCEL)) {
-                    applicationList.remove(a);
-                    i--;
-                }
-            }
-            session.setAttribute("applyState",3);
-        }
+        PageHelper.startPage(pn,10);
+        List<Application> applicationList = applicationService.selectByUserId(employee.getUserId(),applyState);
+        PageInfo pageInfo = new PageInfo(applicationList,5);
+        model.addAttribute("pageInfo",pageInfo);
+        model.addAttribute("applyState",applyState);
 
         log.info("**********ApplicationController.listOneEmp.userId-->"+employee.toString());
         session.setAttribute("applicationList",applicationList);
@@ -130,58 +97,24 @@ public class ApplicationController {
         return "redirect:/emp/list/0";
     }
 
-    @GetMapping("/application/getDepartApply/{applyState}")
-    public String getDepartApply(@PathVariable("applyState") Integer applyState,HttpSession session){
+    @GetMapping("/application/getDepartApply")
+    public String getDepartApply(@RequestParam(value = "applyState",defaultValue = "0") Integer applyState,
+                                 @RequestParam(value = "pn",defaultValue = "0") Integer pn,
+                                 Model model,HttpSession session){
         Employee employee = (Employee) session.getAttribute("emp");
 
-        List<Application> applicationDepartList = applicationService.selectByDepartId(employee);
+
+
+        PageHelper.startPage(pn,10);
+        List<Application> applicationDepartList = applicationService.selectByDepartId(employee,applyState);
 
         for(int i=0;i<applicationDepartList.size();i++){
             applicationDepartList.get(i).setEmployee(employeeService.getEmployeeById(applicationDepartList.get(i).getUserId()));
         }
+        PageInfo pageInfo = new PageInfo(applicationDepartList,5);
+        model.addAttribute("pageInfo",pageInfo);
+        model.addAttribute("applyState",applyState);
 
-        session.setAttribute("applyState",0);
-
-        if(applyState==1){
-            //未审核
-            for(int i=0;i<applicationDepartList.size();i++){
-                Application a = applicationDepartList.get(i);
-                log.info("***********a.applyState"+a.getApplyState());
-                if(a.getApplyState().equals(Constant.APPLICATION_STATE_AGREE)||
-                        a.getApplyState().equals(Constant.APPLICATION_STATE_DENY) ||
-                        a.getApplyState().equals(Constant.APPLICATION_STATE_CANCEL)) {
-                    applicationDepartList.remove(a);
-                    i--;
-                }
-            }
-            session.setAttribute("applyState",1);
-        }
-        else if(applyState==2) {
-            //已审核
-            for(int i=0;i<applicationDepartList.size();i++){
-                Application a = applicationDepartList.get(i);
-                log.info("***********a.applyState"+a.getApplyState()+"applyId"+a.getApplyId());
-                if (a.getApplyState().equals(Constant.APPLICATION_STATE_SUBMIT) ||
-                        a.getApplyState().equals(Constant.APPLICATION_STATE_MODIFY) ||
-                        a.getApplyState().equals(Constant.APPLICATION_STATE_CANCEL)) {
-                    applicationDepartList.remove(a);
-                    i--;
-                }
-            }
-            session.setAttribute("applyState",2);
-
-        }
-        else if(applyState==3){
-            //已取消
-            for(int i=0;i<applicationDepartList.size();i++){
-                Application a = applicationDepartList.get(i);
-                if (!a.getApplyState().equals(Constant.APPLICATION_STATE_CANCEL)) {
-                    applicationDepartList.remove(a);
-                    i--;
-                }
-            }
-            session.setAttribute("applyState",3);
-        }
 
         log.info("**********ApplicationController.submit.userId-->"+employee.toString());
 
@@ -192,69 +125,28 @@ public class ApplicationController {
 
     }
 
-    @GetMapping("/application/getClassApply/{applyState}")
-    public String getClassApply(@PathVariable("applyState") Integer applyState,HttpSession session){
+    @GetMapping("/application/getClassApply")
+    public String getClassApply(@RequestParam(value = "applyState",defaultValue = "0") Integer applyState,
+                                @RequestParam(value = "pn",defaultValue = "0") Integer pn,
+                                Model model,HttpSession session){
         Employee employee = (Employee) session.getAttribute("emp");
 
-        List<Application> applicationClassList = applicationService.selectByClassId(employee);
+
+
+        PageHelper.startPage(pn,10);
+        List<Application> applicationClassList = applicationService.selectByClassId(employee,applyState);
 
         log.info("***************ApplicationController.getClassApply.applicationClassList(NoEmployee):"+applicationClassList.toString());
 
 
-         //去除班长自己的申请
+        //添加员工对象
         for(int i=0;i<applicationClassList.size();i++){
             applicationClassList.get(i).setEmployee(employeeService.getEmployeeById(applicationClassList.get(i).getUserId()));
-            if(applicationClassList.get(i).getUserId().equals(employee.getUserId())){
-                log.info("************************ApplicationController.getClassApply." +
-                        "applicationClassList("+i+")"+applicationClassList.get(i).toString());
-                applicationClassList.remove(i);
-                i--;
-            }
         }
         log.info("********************ApplicationController.getClassApply.applicationClassList"+applicationClassList.toString());
-
-        session.setAttribute("applyState",0);
-
-        if(applyState==1){
-            //未审核
-            for(int i=0;i<applicationClassList.size();i++){
-                Application a = applicationClassList.get(i);
-                log.info("***********a.applyState"+a.getApplyState());
-                if(a.getApplyState().equals(Constant.APPLICATION_STATE_AGREE)||
-                        a.getApplyState().equals(Constant.APPLICATION_STATE_DENY) ||
-                        a.getApplyState().equals(Constant.APPLICATION_STATE_CANCEL)) {
-                    applicationClassList.remove(a);
-                    i--;
-                }
-            }
-            session.setAttribute("applyState",1);
-        }
-        else if(applyState==2) {
-            //已审核
-            for(int i=0;i<applicationClassList.size();i++){
-                Application a = applicationClassList.get(i);
-                log.info("***********a.applyState"+a.getApplyState()+"applyId"+a.getApplyId());
-                if (a.getApplyState().equals(Constant.APPLICATION_STATE_SUBMIT) ||
-                        a.getApplyState().equals(Constant.APPLICATION_STATE_MODIFY) ||
-                        a.getApplyState().equals(Constant.APPLICATION_STATE_CANCEL)) {
-                    applicationClassList.remove(a);
-                    i--;
-                }
-            }
-            session.setAttribute("applyState",2);
-
-        }
-        else if(applyState==3){
-            //已取消
-            for(int i=0;i<applicationClassList.size();i++){
-                Application a = applicationClassList.get(i);
-                if (!a.getApplyState().equals(Constant.APPLICATION_STATE_CANCEL)) {
-                    applicationClassList.remove(a);
-                    i--;
-                }
-            }
-            session.setAttribute("applyState",3);
-        }
+        PageInfo pageInfo = new PageInfo(applicationClassList,5);
+        model.addAttribute("pageInfo",pageInfo);
+        model.addAttribute("applyState",applyState);
 
         log.info("**********ApplicationController.getClassApply.userId-->"+employee.toString());
 
@@ -298,41 +190,22 @@ public class ApplicationController {
         return "redirect:/application/getClassApply/"+employee.getClassId();
     }
 
-//    @GetMapping("/application/getDepartApply/{applyState}")
-    public String getDepartApply(@PathVariable("applyState") Integer applyState, HttpSession session, HttpServletRequest req){
+
+    @GetMapping("/application/getRecent")
+    public String getRecentApplyByDepartId(@RequestParam(value = "applyState",defaultValue = "0") Integer applyState,
+                                           @RequestParam(value = "pn",defaultValue = "0") Integer pn,
+                                           Model model,HttpSession session){
         Employee employee = (Employee) session.getAttribute("emp");
 
-        int pageNumber = 1;
-        try {
-            pageNumber = Integer.parseInt(req.getParameter("pageNumber"));
-        } catch (NumberFormatException e) {
-        }
-
-        int pageSize = Constant.PAGE_SIZE;
-        //调用service 分页查询商品参数：3个，返回值：pagebean
-        PageBean pageBean = new PageBean(pageNumber,pageSize);
-        List<Application> applicationDepartList =  applicationService.selectByDepartId(employee,applyState,pageBean);
-        log.info("***************ApplicationController.getDepartApply.applicationDepartList",applicationDepartList.toArray());
-
-        //将pagebean放入request中，请求转发product_list.jsp
-        req.setAttribute("applicationDepartList",applicationDepartList);
-
-        return "emp/departApply";
-
-    }
-
-    @GetMapping("/application/getRecent/{applyState}/{pageNumber}")
-    public String getRecentApplyByDepartId(@PathVariable("applyState") Integer applyState,@PathVariable("pageNumber")Integer pageNumber, HttpSession session){
-        Employee employee = (Employee) session.getAttribute("emp");
-
-        int startIndex = (pageNumber-1)*Constant.PAGE_SIZE;
-
-        List<Application> recentDepartList = applicationService.getEmployeesByDepartId(employee,startIndex,applyState);
+        PageHelper.startPage(pn,10);
+        List<Application> recentDepartList = applicationService.getEmployeesByDepartId(employee,applyState);
 
         for(int i=0;i<recentDepartList.size();i++){
             recentDepartList.get(i).setEmployee(employeeService.getEmployeeById(recentDepartList.get(i).getUserId()));
         }
-
+        PageInfo pageInfo = new PageInfo(recentDepartList,5);
+        model.addAttribute("pageInfo",pageInfo);
+        model.addAttribute("applyState",applyState);
 
         log.info("**********ApplicationController.submit.userId-->"+employee.toString());
 

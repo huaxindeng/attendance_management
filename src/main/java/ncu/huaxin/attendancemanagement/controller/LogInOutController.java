@@ -1,5 +1,7 @@
 package ncu.huaxin.attendancemanagement.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import ncu.huaxin.attendancemanagement.constant.Constant;
 import ncu.huaxin.attendancemanagement.entity.Employee;
@@ -13,9 +15,11 @@ import ncu.huaxin.attendancemanagement.service.EmployeeService;
 import ncu.huaxin.attendancemanagement.service.LogInOutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -42,41 +46,21 @@ public class LogInOutController {
     @Autowired
     private ClassService classService;
 
-    @GetMapping("/inoutLog/getClassInOut/{inOutState}")
-    public String getClassInOut(@PathVariable("inOutState")Integer inOutState, HttpSession session){
+    @GetMapping("/inoutLog/getClassInOut")
+    public String getClassInOut(@RequestParam(value = "inOutState",defaultValue = "0") Integer inOutState,
+                                @RequestParam(value = "pn",defaultValue = "0") Integer pn,
+                                Model model, HttpSession session){
 
         Employee employee = (Employee) session.getAttribute("emp");
         List<LogInOut> logInOutList = new LinkedList<>();
+        PageHelper.startPage(pn,10);
         if(employee.getPosition().equals(Constant.EMPLOYEE_POSITION_MONITOR)){
-            logInOutList = logInOutService.selectByClassId(employee.getClassId());
+            logInOutList = logInOutService.selectByClassId(employee.getClassId(),inOutState);
             log.info("班长，登入登出记录");
         }
         else if(employee.getPosition().equals(Constant.EMPLOYEE_POSITION_LEADER)){
-            logInOutList = logInOutService.selectAll();
+            logInOutList = logInOutService.selectAll(inOutState);
             log.info("领导，登入登出记录");
-        }
-
-
-
-        if(inOutState==1){
-            for(int i=0;i<logInOutList.size();i++){
-                LogInOut inOut = logInOutList.get(i);
-
-                if(inOut.getInoutType().equals(Constant.INOUT_TYPE_OUT)){
-                    logInOutList.remove(i);
-                    i--;
-                }
-            }
-        }
-        else if(inOutState==2){
-            for(int i=0;i<logInOutList.size();i++){
-                LogInOut inOut = logInOutList.get(i);
-
-                if(inOut.getInoutType().equals(Constant.INOUT_TYPE_IN)){
-                    logInOutList.remove(i);
-                    i--;
-                }
-            }
         }
 
 
@@ -85,6 +69,10 @@ public class LogInOutController {
             logInOutList.get(i).setClassOf(classService.selectById(logInOutList.get(i).getClassId()));
             logInOutList.get(i).setDepartment(departmentService.selectById(logInOutList.get(i).getDepartId()));
         }
+
+        PageInfo pageInfo = new PageInfo(logInOutList,5);
+        model.addAttribute("pageInfo",pageInfo);
+        model.addAttribute("inOutState",inOutState);
 
         session.setAttribute("logInOutList",logInOutList);
         return "inOutLog/classLog";

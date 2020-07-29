@@ -54,11 +54,11 @@
 
 				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
 					<h2>
-						<a class="btn btn-sm btn-success" th:href="@{/application/getClassApply/0}">全部申请</a>
-						<a class="btn btn-sm btn-success" th:href="@{/application/getClassApply/1}">未审核</a>
-						<a class="btn btn-sm btn-success" th:href="@{/application/getClassApply/2}">已审核</a>
-						<a class="btn btn-sm btn-success" th:href="@{/application/getClassApply/3}">已取消</a>
-						<a class="btn btn-sm btn-success" th:href="@{/application/getClassApply/0}">返回</a>
+						<a class="btn btn-sm btn-success" th:href="@{/application/getClassApply(pn=1,applyState=0)}">全部申请</a>
+						<a class="btn btn-sm btn-success" th:href="@{/application/getClassApply(pn=1,applyState=1)}">未审核</a>
+						<a class="btn btn-sm btn-success" th:href="@{/application/getClassApply(pn=1,applyState=2)}">已审核</a>
+						<a class="btn btn-sm btn-success" th:href="@{/application/getClassApply(pn=1,applyState=3)}">已取消</a>
+						<a class="btn btn-sm btn-success" th:href="@{/application/getClassApply(pn=1,applyState=0)}">返回</a>
 					</h2>
 
 					<div class="table-responsive">
@@ -114,6 +114,50 @@
 
 
 							</tbody>
+							<tfoot>
+							<tr >
+								<!--分页文字信息  -->
+								<td colspan="4">
+									<div class="col-md-8 ">
+										当前 <span th:text="${pageInfo.pageNum }" ></span>页,总<span th:text="${pageInfo.pages}" ></span>页,总 <span th:text="${pageInfo.total }" ></span>条记录
+									</div>
+								</td>
+								<td></td>
+								<td  colspan="3">
+									<!-- 分页条信息 -->
+									<div class="col-md-12">
+										<nav aria-label="Page navigation">
+											<ul class="pagination">
+												<li><a th:href="@{/application/getClassApply(pn=1,applyState=${applyState})}"  >首页</a></li>
+												<li th:if="${pageInfo.hasPreviousPage }">
+													<a th:href="@{/application/getClassApply(pn=${pageInfo.pageNum-1},applyState=${applyState})}"
+													   aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+													</a>
+												</li>
+
+												<div th:each="page_Num:${pageInfo.navigatepageNums}" >
+													<li  th:if="${page_Num eq pageInfo.pageNum }" class="active">
+														<a href="#"><span th:text="${page_Num}"></span></a>
+													</li>
+													<li th:if="${page_Num ne pageInfo.pageNum }">
+														<a th:href="@{/application/getClassApply(pn=${page_Num},applyState=${applyState})}">
+															<span th:text="${page_Num}"></span>
+														</a>
+													</li>
+												</div>
+												<li th:if="${pageInfo.hasNextPage }">
+													<a th:href="@{/application/getClassApply(pn=${pageInfo.pageNum+1},applyState=${applyState})}"
+													   aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+													</a></li>
+												<li>
+													<a th:href="@{/application/getClassApply(pn=${pageInfo.pages},applyState=${applyState})}">末页</a>
+												</li>
+											</ul>
+										</nav>
+									</div>
+								</td>
+
+							</tfoot>
 						</table>
 					</div>
 				</main>

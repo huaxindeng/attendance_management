@@ -93,23 +93,23 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<Application> selectByUserId(Integer userId) {
-        return applicationMapper.selectByUserId(userId);
+    public List<Application> selectByUserId(Integer userId, Integer applyState) {
+        return applicationMapper.selectByUserId(userId,applyState);
     }
 
     @Override
-    public List<Application> selectByClassId(Employee employee) {
-        return applicationMapper.selectByClassId(employee);
+    public List<Application> selectByClassId(Employee employee,Integer applyState) {
+        return applicationMapper.selectByClassId(employee, applyState);
     }
 
-    @Override
-    public List<Application> selectByDepartId(Employee employee) {
-        return applicationMapper.selectByDepartId(employee);
-    }
+//    @Override
+//    public List<Application> selectByDepartId(Employee employee,Integer applyState) {
+//        return applicationMapper.selectByDepartId(employee,applyState);
+//    }
 
     @Override
-    public List<Application> selectByDepartId(Employee employee, Integer applyState, PageBean pageBean) {
-        return applicationMapper.selectByDepartId(employee,applyState,pageBean);
+    public List<Application> selectByDepartId(Employee employee, Integer applyState) {
+        return applicationMapper.selectByDepartId(employee,applyState);
     }
 
     @Override
@@ -128,7 +128,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<Application> getEmployeesByDepartId(Employee employee,Integer startIndex,Integer applyState) {
-        return applicationMapper.getEmployeesByDepartId(employee,startIndex,applyState);
+    public List<Application> getEmployeesByDepartId(Employee employee,Integer applyState) {
+        return applicationMapper.getEmployeesByDepartId(employee,applyState);
     }
 }

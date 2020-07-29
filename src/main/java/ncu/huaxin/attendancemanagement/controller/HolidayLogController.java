@@ -1,5 +1,7 @@
 package ncu.huaxin.attendancemanagement.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import ncu.huaxin.attendancemanagement.constant.Constant;
 import ncu.huaxin.attendancemanagement.entity.Application;
@@ -8,9 +10,11 @@ import ncu.huaxin.attendancemanagement.entity.HolidayLog;
 import ncu.huaxin.attendancemanagement.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -40,68 +44,35 @@ public class HolidayLogController {
     @Autowired
     private ApplicationService applicationService;
 
-    @GetMapping("/holidayLog/getClassLog/{holidayState}")
-    public String getClassLog(@PathVariable("holidayState")Integer holidayState, HttpSession session){
+    @GetMapping("/holidayLog/getClassLog")
+    public String getClassLog(@RequestParam(value = "holidayState",defaultValue = "0") Integer holidayState,
+                              @RequestParam(value = "pn",defaultValue = "0") Integer pn,
+                              Model model, HttpSession session){
 
         Employee employee = (Employee) session.getAttribute("emp");
 
+        PageHelper.startPage(pn,10);
         List<HolidayLog> holidayLogList = new LinkedList<>();
         if(employee.getPosition().equals(Constant.EMPLOYEE_POSITION_MONITOR)){
-            holidayLogList = holidayLogService.selectByClassId(employee.getClassId());
+            holidayLogList = holidayLogService.selectByClassId(employee.getClassId(),holidayState);
             log.info("班长，假期申请记录");
         }
         else if(employee.getPosition().equals(Constant.EMPLOYEE_POSITION_LEADER)){
-            holidayLogList = holidayLogService.selectAll();
+            holidayLogList = holidayLogService.selectAll(holidayState);
             log.info("领导，假期申请记录");
         }
-
-
-
-        if(holidayState==1){
-            //申请记录
-            for(int i=0;i<holidayLogList.size();i++){
-                HolidayLog holidayLog = holidayLogList.get(i);
-//                log.info("***********a.applyState"+a.getApplyState());
-                if(holidayLog.getHolidayState().equals(Constant.HOLIDAY_STATE_MODIFY)||
-                        holidayLog.getHolidayState().equals(Constant.HOLIDAY_STATE_CANCEL)) {
-                    holidayLogList.remove(holidayLog);
-                    i--;
-                }
-            }
-        }
-        else if(holidayState==2) {
-            //修改记录
-            for(int i=0;i<holidayLogList.size();i++){
-                HolidayLog holidayLog = holidayLogList.get(i);
-//                log.info("***********a.applyState"+a.getApplyState());
-                if(holidayLog.getHolidayState().equals(Constant.HOLIDAY_STATE_SUBMIT)||
-                        holidayLog.getHolidayState().equals(Constant.HOLIDAY_STATE_CANCEL)) {
-                    holidayLogList.remove(holidayLog);
-                    i--;
-                }
-            }
-
-        }
-        else if(holidayState==3){
-            //取消记录
-            for(int i=0;i<holidayLogList.size();i++){
-                HolidayLog holidayLog = holidayLogList.get(i);
-//                log.info("***********a.applyState"+a.getApplyState());
-                if(holidayLog.getHolidayState().equals(Constant.HOLIDAY_STATE_MODIFY)||
-                        holidayLog.getHolidayState().equals(Constant.HOLIDAY_STATE_SUBMIT)) {
-                    holidayLogList.remove(holidayLog);
-                    i--;
-                }
-            }
-        }
-
-
         for(int i=0;i<holidayLogList.size();i++){
             holidayLogList.get(i).setClassOf(classService.selectById(holidayLogList.get(i).getClassId()));
             holidayLogList.get(i).setEmployee(employeeService.getEmployeeById(holidayLogList.get(i).getUserId()));
             holidayLogList.get(i).setApplication(applicationService.selectById(holidayLogList.get(i).getApplyId()));
             holidayLogList.get(i).setDepartment(departmentService.selectById(holidayLogList.get(i).getDepartId()));
         }
+
+        PageInfo pageInfo = new PageInfo(holidayLogList,5);
+        model.addAttribute("pageInfo",pageInfo);
+        model.addAttribute("holidayState",holidayState);
+
+
         session.setAttribute("holidayLogList",holidayLogList);
         return "holidayLog/classLog";
     }

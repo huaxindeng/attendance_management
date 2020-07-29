@@ -12,11 +12,37 @@
     </select>
 
     <select id="selectByClassId" resultType="LogInOut">
-        select * from inout_log where classId=#{classId} order by inoutTime desc
+        select * from inout_log where classId=#{classId} and
+        <choose>
+            <when test="inOutState==0">
+                1=1
+            </when>
+            <when test="inOutState==1">
+                (inOutType='登入')
+            </when>
+            <when test="inOutState==2">
+                (inOutType='登出' )
+            </when>
+
+        </choose>
+        order by inoutTime desc
     </select>
 
     <select id="selectAll" resultType="LogInOut">
-        select * from inout_log order by inoutTime desc
+        select * from inout_log and
+        <choose>
+            <when test="inOutState==0">
+                1=1
+            </when>
+            <when test="inOutState==1">
+                (inOutType='登入')
+            </when>
+            <when test="inOutState==2">
+                (inOutType='登出' )
+            </when>
+
+        </choose>
+        order by inoutTime desc
     </select>
 
     <select id="selectByEmpName" resultType="LogInOut">

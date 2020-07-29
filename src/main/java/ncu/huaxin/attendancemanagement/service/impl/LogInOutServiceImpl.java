@@ -27,13 +27,13 @@ public class LogInOutServiceImpl implements LogInOutService {
     }
 
     @Override
-    public List<LogInOut> selectByClassId(Integer classId) {
-        return logInOutMapper.selectByClassId(classId);
+    public List<LogInOut> selectByClassId(Integer classId,Integer inOutState) {
+        return logInOutMapper.selectByClassId(classId,inOutState);
     }
 
     @Override
-    public List<LogInOut> selectAll() {
-        return logInOutMapper.selectAll();
+    public List<LogInOut> selectAll(Integer inOutState) {
+        return logInOutMapper.selectAll(inOutState);
     }
 
     @Override

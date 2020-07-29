@@ -14,7 +14,23 @@
     </insert>
 
     <select id="selectByUserId" resultType="Application">
-        select * from application where userId = #{userId}
+        select * from application where userId = #{userId} and
+        <choose>
+            <when test="applyState==0">
+                1=1
+            </when>
+            <when test="applyState==1">
+                (applystate='修改' or applyState='提交')
+            </when>
+            <when test="applyState==2">
+                (applystate='同意' or applyState='拒绝')
+            </when>
+            <when test="applyState==3">
+                applystate='取消'
+            </when>
+
+        </choose>
+
     </select>
 
     <select id="selectById" resultType="Application">
@@ -32,40 +48,51 @@
     </update>
 
     <select id="selectByClassId" resultType="Application">
-        select * from application a where a.classId=#{employee.classId}
+        select * from application a where a.classId=#{employee.classId} and
+
+        <choose>
+            <when test="applyState==0">
+                1=1
+            </when>
+            <when test="applyState==1">
+                (applystate='修改' or applyState='提交')
+            </when>
+            <when test="applyState==2">
+                (applystate='同意' or applyState='拒绝')
+            </when>
+            <when test="applyState==3">
+                applystate='取消'
+            </when>
+        </choose>
+        <if test="employee.position == '班长'">
+            and userId != #{employee.userId}
+        </if>
     </select>
 
     <select id="selectByDepartId" resultType="Application">
-        select * from application a where a.departId=#{employee.departId}
+        select * from application a where a.departId=#{employee.departId} and
+        <choose>
+            <when test="applyState==0">
+                1=1
+            </when>
+            <when test="applyState==1">
+                (applystate='修改' or applyState='提交')
+            </when>
+            <when test="applyState==2">
+                (applystate='同意' or applyState='拒绝')
+            </when>
+            <when test="applyState==3">
+                applystate='取消'
+            </when>
+        </choose>
     </select>
 
-<!--    <select id="selectByDepartId" resultType="Application">-->
-<!--        select * from application a-->
-<!--        <where>-->
-<!--            a.departId=#{employee.departId}  and 10=#{pageBean.pageSize}-->
-<!--            <choose>-->
-<!--                <when test="#{applyState=0}">-->
-<!--                    and 1=1-->
-<!--                </when>-->
-<!--                <when test="#{applyState=1}">-->
-<!--                  and (a.applyState = '提交' or a.applyState = '修改')-->
-<!--                </when>-->
-<!--                <when test="#{applyState=2}">-->
-<!--                    and (a.applyState = '同意' or a.applyState = '拒绝')-->
-<!--                </when>-->
-<!--                <when test="#{applyState=3}">-->
-<!--                    and (a.applyState = '取消' )-->
-<!--                </when>-->
-<!--            </choose>-->
-<!--        </where>-->
-<!--&#45;&#45;         order by applyId desc limit = #{pageBean.startIndex},5-->
-<!--    </select>-->
 
     <select id="getEmployeesByDepartId" resultType="Application">
         select * from application a where a.departId=#{employee.departId}
          and  (DATEDIFF(startTime,NOW())=0 or DATEDIFF(startTime,NOW())=1) and a.applyState = '同意'
 
-          order by applyId limit #{startIndex},10
+
     </select>
 
     <update id="agree">
@@ -78,15 +105,4 @@
     </update>
 
 
-<!--    <select id="selectByClassId" parameterType="LogInOut" resultType="java.util.List">-->
-<!--        select * from inout_log where classId=#{classId}-->
-<!--    </select>-->
-
-<!--    <select id="selectAll" parameterType="LogInOut" resultType="java.util.List">-->
-<!--        select * from inout_log-->
-<!--    </select>-->
-
-<!--    <insert id="insertEmp">-->
-<!--        INSERT INTO employee(username,email,gender,d_id) VALUES (#{lastName},#{email},#{gender},#{dId})-->
-<!--    </insert>-->
 </mapper>

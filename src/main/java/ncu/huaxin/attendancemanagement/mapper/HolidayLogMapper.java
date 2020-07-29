@@ -25,13 +25,13 @@ public interface HolidayLogMapper {
      * @param classId
      * @return
      */
-    List<HolidayLog> selectByClassId(Integer classId);
+    List<HolidayLog> selectByClassId(Integer classId,Integer holidayState);
 
     /**
      * 查找所有的申请记录
      * @return
      */
-    List<HolidayLog> selectAll();
+    List<HolidayLog> selectAll(Integer holidayState);
 
     /**
      * 根据员工查询操作记录
