@@ -1,8 +1,6 @@
 package ncu.huaxin.attendancemanagement.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import ncu.huaxin.attendancemanagement.constant.Constant;
-import ncu.huaxin.attendancemanagement.entity.Application;
 import ncu.huaxin.attendancemanagement.entity.Employee;
 import ncu.huaxin.attendancemanagement.entity.HolidayLog;
 import ncu.huaxin.attendancemanagement.mapper.HolidayLogMapper;

@@ -5,9 +5,7 @@ import ncu.huaxin.attendancemanagement.constant.Constant;
 import ncu.huaxin.attendancemanagement.entity.Application;
 import ncu.huaxin.attendancemanagement.entity.Employee;
 import ncu.huaxin.attendancemanagement.entity.HolidayLog;
-import ncu.huaxin.attendancemanagement.entity.PageBean;
 import ncu.huaxin.attendancemanagement.mapper.ApplicationMapper;
-import ncu.huaxin.attendancemanagement.mapper.HolidayLogMapper;
 import ncu.huaxin.attendancemanagement.service.ApplicationService;
 import ncu.huaxin.attendancemanagement.service.HolidayLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +27,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Autowired
     private HolidayLogService holidayLogService;
 
-    @Override
-    public void save(Application application) {
-
-    }
 
     @Override
     public void submit(Application application) {
@@ -102,10 +96,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         return applicationMapper.selectByClassId(employee, applyState);
     }
 
-//    @Override
-//    public List<Application> selectByDepartId(Employee employee,Integer applyState) {
-//        return applicationMapper.selectByDepartId(employee,applyState);
-//    }
 
     @Override
     public List<Application> selectByDepartId(Employee employee, Integer applyState) {

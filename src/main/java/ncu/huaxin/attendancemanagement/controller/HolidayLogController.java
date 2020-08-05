@@ -1,10 +1,9 @@
 package ncu.huaxin.attendancemanagement.controller;
 
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.page.PageMethod;
 import lombok.extern.slf4j.Slf4j;
 import ncu.huaxin.attendancemanagement.constant.Constant;
-import ncu.huaxin.attendancemanagement.entity.Application;
 import ncu.huaxin.attendancemanagement.entity.Employee;
 import ncu.huaxin.attendancemanagement.entity.HolidayLog;
 import ncu.huaxin.attendancemanagement.service.*;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -51,7 +49,7 @@ public class HolidayLogController {
 
         Employee employee = (Employee) session.getAttribute("emp");
 
-        PageHelper.startPage(pn,10);
+        PageMethod.startPage(pn,10);
         List<HolidayLog> holidayLogList = new LinkedList<>();
         if(employee.getPosition().equals(Constant.EMPLOYEE_POSITION_MONITOR)){
             holidayLogList = holidayLogService.selectByClassId(employee.getClassId(),holidayState);
@@ -68,7 +66,7 @@ public class HolidayLogController {
             holidayLogList.get(i).setDepartment(departmentService.selectById(holidayLogList.get(i).getDepartId()));
         }
 
-        PageInfo pageInfo = new PageInfo(holidayLogList,5);
+        PageInfo<HolidayLog> pageInfo = new PageInfo<>(holidayLogList,5);
         model.addAttribute("pageInfo",pageInfo);
         model.addAttribute("holidayState",holidayState);
 

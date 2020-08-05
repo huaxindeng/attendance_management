@@ -2,10 +2,8 @@ package ncu.huaxin.attendancemanagement.mapper;
 
 import ncu.huaxin.attendancemanagement.entity.Application;
 import ncu.huaxin.attendancemanagement.entity.Employee;
-import ncu.huaxin.attendancemanagement.entity.PageBean;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import sun.applet.AppletListener;
 
 import java.util.List;
 
@@ -60,11 +58,7 @@ public interface ApplicationMapper {
      */
     List<Application> selectByDepartId(@Param("employee") Employee employee,Integer applyState);
 
-    /**
-     * 查看部门申请
-     * @param employee
-     */
-    List<Application> selectByDepartId(@Param("employee") Employee employee, Integer applyState, @Param("pageBean") PageBean pageBean);
+
 
     /**
      * 同意申请

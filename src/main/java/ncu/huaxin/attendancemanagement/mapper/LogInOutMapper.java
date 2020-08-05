@@ -1,11 +1,9 @@
 package ncu.huaxin.attendancemanagement.mapper;
 
 import ncu.huaxin.attendancemanagement.entity.Employee;
-import ncu.huaxin.attendancemanagement.entity.HolidayLog;
 import ncu.huaxin.attendancemanagement.entity.LogInOut;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import sun.rmi.runtime.Log;
 
 import java.util.Date;
 import java.util.List;

@@ -31,7 +31,7 @@ public class LogInOut implements Serializable {
     private Integer departId;
 
     private Integer userId;
-    private Class classOf;
+    private ncu.huaxin.attendancemanagement.entity.Class classOf;
     private Department department;
 
     public Department getDepartment() {
@@ -56,11 +56,11 @@ public class LogInOut implements Serializable {
                 '}';
     }
 
-    public Class getClassOf() {
+    public ncu.huaxin.attendancemanagement.entity.Class getClassOf() {
         return classOf;
     }
 
-    public void setClassOf(Class classOf) {
+    public void setClassOf(ncu.huaxin.attendancemanagement.entity.Class classOf) {
         this.classOf = classOf;
     }
 

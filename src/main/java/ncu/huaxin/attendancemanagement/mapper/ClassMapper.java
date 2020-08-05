@@ -1,6 +1,5 @@
 package ncu.huaxin.attendancemanagement.mapper;
 
-import ncu.huaxin.attendancemanagement.entity.Class;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -14,5 +13,5 @@ public interface ClassMapper {
      * @param classId
      * @return
      */
-    Class selectById(Integer classId);
+    ncu.huaxin.attendancemanagement.entity.Class selectById(Integer classId);
 }

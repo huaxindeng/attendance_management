@@ -1,6 +1,5 @@
 package ncu.huaxin.attendancemanagement.service;
 
-import ncu.huaxin.attendancemanagement.entity.Class;
 import ncu.huaxin.attendancemanagement.entity.Department;
 
 /**

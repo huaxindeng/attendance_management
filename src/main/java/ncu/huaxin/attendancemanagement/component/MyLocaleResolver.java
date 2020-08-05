@@ -1,6 +1,5 @@
 package ncu.huaxin.attendancemanagement.component;
 
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.LocaleResolver;
 import org.thymeleaf.util.StringUtils;
@@ -32,4 +31,6 @@ public class MyLocaleResolver implements LocaleResolver {
     public void setLocale(HttpServletRequest request, HttpServletResponse response, Locale locale) {
 
     }
+
+
 }

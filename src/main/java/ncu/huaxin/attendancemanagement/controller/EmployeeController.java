@@ -1,22 +1,19 @@
 package ncu.huaxin.attendancemanagement.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import ncu.huaxin.attendancemanagement.constant.Constant;
 import ncu.huaxin.attendancemanagement.entity.Application;
 import ncu.huaxin.attendancemanagement.entity.ApplyType;
-import ncu.huaxin.attendancemanagement.entity.Employee;
 import ncu.huaxin.attendancemanagement.service.ApplicationService;
 import ncu.huaxin.attendancemanagement.service.ApplyTypeService;
 import ncu.huaxin.attendancemanagement.service.EmployeeService;
 import ncu.huaxin.attendancemanagement.service.LogInOutService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author huaxin

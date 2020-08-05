@@ -2,8 +2,6 @@ package ncu.huaxin.attendancemanagement.service;
 
 import ncu.huaxin.attendancemanagement.entity.Application;
 import ncu.huaxin.attendancemanagement.entity.Employee;
-import ncu.huaxin.attendancemanagement.entity.PageBean;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,11 +11,6 @@ import java.util.List;
  */
 public interface ApplicationService {
 
-    /**
-     * 保存申请，暂不提交
-     * @param application
-     */
-    void save(Application application);
 
     /**
      * 提交申请
@@ -49,11 +42,6 @@ public interface ApplicationService {
      */
     List<Application> selectByClassId(Employee employee,Integer applyState);
 
-    /**
-     * 查看部门申请
-     * @param employee
-     */
-//    List<Application> selectByDepartId(Employee employee);
 
     /**
      * 查看部门申请

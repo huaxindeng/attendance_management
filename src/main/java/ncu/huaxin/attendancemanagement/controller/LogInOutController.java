@@ -1,14 +1,11 @@
 package ncu.huaxin.attendancemanagement.controller;
 
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.page.PageMethod;
 import lombok.extern.slf4j.Slf4j;
 import ncu.huaxin.attendancemanagement.constant.Constant;
 import ncu.huaxin.attendancemanagement.entity.Employee;
-import ncu.huaxin.attendancemanagement.entity.HolidayLog;
 import ncu.huaxin.attendancemanagement.entity.LogInOut;
-import ncu.huaxin.attendancemanagement.mapper.DepartmentMapper;
-import ncu.huaxin.attendancemanagement.mapper.LogInOutMapper;
 import ncu.huaxin.attendancemanagement.service.ClassService;
 import ncu.huaxin.attendancemanagement.service.DepartmentService;
 import ncu.huaxin.attendancemanagement.service.EmployeeService;
@@ -17,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -53,7 +49,7 @@ public class LogInOutController {
 
         Employee employee = (Employee) session.getAttribute("emp");
         List<LogInOut> logInOutList = new LinkedList<>();
-        PageHelper.startPage(pn,10);
+        PageMethod.startPage(pn,10);
         if(employee.getPosition().equals(Constant.EMPLOYEE_POSITION_MONITOR)){
             logInOutList = logInOutService.selectByClassId(employee.getClassId(),inOutState);
             log.info("班长，登入登出记录");
@@ -70,7 +66,7 @@ public class LogInOutController {
             logInOutList.get(i).setDepartment(departmentService.selectById(logInOutList.get(i).getDepartId()));
         }
 
-        PageInfo pageInfo = new PageInfo(logInOutList,5);
+        PageInfo<LogInOut> pageInfo = new PageInfo<>(logInOutList,5);
         model.addAttribute("pageInfo",pageInfo);
         model.addAttribute("inOutState",inOutState);
 

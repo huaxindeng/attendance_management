@@ -3,9 +3,7 @@ package ncu.huaxin.attendancemanagement.mapper;
 import ncu.huaxin.attendancemanagement.entity.Employee;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 /**

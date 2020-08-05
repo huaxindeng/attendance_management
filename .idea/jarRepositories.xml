@@ -2,9 +2,29 @@
 <project version="4">
   <component name="RemoteRepositoriesConfiguration">
     <remote-repository>
+      <option name="id" value="hzero-snapshot" />
+      <option name="name" value="hzero snapshot" />
+      <option name="url" value="http://nexus.saas.hand-china.com/content/repositories/Hzero-Snapshot/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="central" />
       <option name="name" value="Maven Central repository" />
       <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="choerodon-release-repository" />
+      <option name="name" value="choerodon Release Repository" />
+      <option name="url" value="http://nexus.choerodon.com.cn/repository/choerodon-release/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="choerodon-snapshot" />
+      <option name="name" value="Choerodon Snapshot" />
+      <option name="url" value="https://nexus.choerodon.com.cn/repository/choerodon-snapshot/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="HzeroRelease" />
+      <option name="name" value="Hzero-Release Repository" />
+      <option name="url" value="http://nexus.saas.hand-china.com/content/repositories/Hzero-Release/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="central" />

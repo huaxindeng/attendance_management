@@ -1,10 +1,9 @@
 package ncu.huaxin.attendancemanagement.service;
 
-import ncu.huaxin.attendancemanagement.entity.Application;
+
 import ncu.huaxin.attendancemanagement.entity.Employee;
 import ncu.huaxin.attendancemanagement.entity.HolidayLog;
 import org.apache.ibatis.annotations.Param;
-import sun.plugin.viewer.context.IExplorerAppletContext;
 
 import java.util.List;
 

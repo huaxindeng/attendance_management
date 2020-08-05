@@ -1,6 +1,5 @@
 package ncu.huaxin.attendancemanagement.mapper;
 
-import ncu.huaxin.attendancemanagement.entity.Class;
 import ncu.huaxin.attendancemanagement.entity.Department;
 import org.apache.ibatis.annotations.Mapper;
 

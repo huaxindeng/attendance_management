@@ -29,7 +29,7 @@ public class HolidayLog implements Serializable {
     private Integer classId;
 
     private Integer departId;
-    private Class classOf;
+    private ncu.huaxin.attendancemanagement.entity.Class classOf;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date logTime;
@@ -79,11 +79,11 @@ public class HolidayLog implements Serializable {
         this.userId = userId;
     }
 
-    public Class getClassOf() {
+    public ncu.huaxin.attendancemanagement.entity.Class getClassOf() {
         return classOf;
     }
 
-    public void setClassOf(Class classOf) {
+    public void setClassOf(ncu.huaxin.attendancemanagement.entity.Class classOf) {
         this.classOf = classOf;
     }
 

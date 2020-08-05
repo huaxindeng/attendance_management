@@ -1,12 +1,11 @@
 package ncu.huaxin.attendancemanagement.controller;
 
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.page.PageMethod;
 import lombok.extern.slf4j.Slf4j;
 import ncu.huaxin.attendancemanagement.constant.Constant;
 import ncu.huaxin.attendancemanagement.entity.Application;
 import ncu.huaxin.attendancemanagement.entity.Employee;
-import ncu.huaxin.attendancemanagement.entity.PageBean;
 import ncu.huaxin.attendancemanagement.service.ApplicationService;
 import ncu.huaxin.attendancemanagement.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -60,9 +58,9 @@ public class ApplicationController {
         log.info("**********ApplicationController.listOneEmp.applyState-->"+applyState);
 
 
-        PageHelper.startPage(pn,10);
+        PageMethod.startPage(pn,10);
         List<Application> applicationList = applicationService.selectByUserId(employee.getUserId(),applyState);
-        PageInfo pageInfo = new PageInfo(applicationList,5);
+        PageInfo<Application> pageInfo = new PageInfo<>(applicationList,5);
         model.addAttribute("pageInfo",pageInfo);
         model.addAttribute("applyState",applyState);
 
@@ -105,13 +103,13 @@ public class ApplicationController {
 
 
 
-        PageHelper.startPage(pn,10);
+        PageMethod.startPage(pn,10);
         List<Application> applicationDepartList = applicationService.selectByDepartId(employee,applyState);
 
         for(int i=0;i<applicationDepartList.size();i++){
             applicationDepartList.get(i).setEmployee(employeeService.getEmployeeById(applicationDepartList.get(i).getUserId()));
         }
-        PageInfo pageInfo = new PageInfo(applicationDepartList,5);
+        PageInfo<Application> pageInfo = new PageInfo<>(applicationDepartList,5);
         model.addAttribute("pageInfo",pageInfo);
         model.addAttribute("applyState",applyState);
 
@@ -133,7 +131,7 @@ public class ApplicationController {
 
 
 
-        PageHelper.startPage(pn,10);
+        PageMethod.startPage(pn,10);
         List<Application> applicationClassList = applicationService.selectByClassId(employee,applyState);
 
         log.info("***************ApplicationController.getClassApply.applicationClassList(NoEmployee):"+applicationClassList.toString());
@@ -144,7 +142,7 @@ public class ApplicationController {
             applicationClassList.get(i).setEmployee(employeeService.getEmployeeById(applicationClassList.get(i).getUserId()));
         }
         log.info("********************ApplicationController.getClassApply.applicationClassList"+applicationClassList.toString());
-        PageInfo pageInfo = new PageInfo(applicationClassList,5);
+        PageInfo<Application> pageInfo = new PageInfo<>(applicationClassList,5);
         model.addAttribute("pageInfo",pageInfo);
         model.addAttribute("applyState",applyState);
 
@@ -197,13 +195,13 @@ public class ApplicationController {
                                            Model model,HttpSession session){
         Employee employee = (Employee) session.getAttribute("emp");
 
-        PageHelper.startPage(pn,10);
+        PageMethod.startPage(pn,10);
         List<Application> recentDepartList = applicationService.getEmployeesByDepartId(employee,applyState);
 
         for(int i=0;i<recentDepartList.size();i++){
             recentDepartList.get(i).setEmployee(employeeService.getEmployeeById(recentDepartList.get(i).getUserId()));
         }
-        PageInfo pageInfo = new PageInfo(recentDepartList,5);
+        PageInfo<Application> pageInfo = new PageInfo<>(recentDepartList,5);
         model.addAttribute("pageInfo",pageInfo);
         model.addAttribute("applyState",applyState);
 
